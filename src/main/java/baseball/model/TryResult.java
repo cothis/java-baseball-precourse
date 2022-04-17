@@ -1,6 +1,7 @@
 package baseball.model;
 
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiPredicate;
 
 public class TryResult {
@@ -18,24 +19,6 @@ public class TryResult {
         this.ball = calculateCount(answerBallMap, userBallMap, (a, b) -> !a.equals(b));
     }
 
-    private int calculateCount(
-            final Map<BallNumber, Integer> answerBallMap,
-            final Map<BallNumber, Integer> userBallMap,
-            final BiPredicate<Integer, Integer> predicate
-    ) {
-        int count = 0;
-        for (Map.Entry<BallNumber, Integer> answerBallMapEntry : answerBallMap.entrySet()) {
-            final Integer userBallPosition = userBallMap.get(answerBallMapEntry.getKey());
-            if (userBallPosition == null) {
-                continue;
-            }
-            if (predicate.test(answerBallMapEntry.getValue(), userBallPosition)) {
-                count ++;
-            }
-        }
-        return count;
-    }
-
     @Override
     public String toString() {
         if (nothing()) {
@@ -51,6 +34,33 @@ public class TryResult {
         }
 
         return ball + BALL_MSG + " " + strike + STRIKE_MSG;
+    }
+
+    private int calculateCount(
+            final Map<BallNumber, Integer> answerBallMap,
+            final Map<BallNumber, Integer> userBallMap,
+            final BiPredicate<Integer, Integer> predicate
+    ) {
+        final AtomicInteger count = new AtomicInteger();
+        for (Map.Entry<BallNumber, Integer> answerBallMapEntry : answerBallMap.entrySet()) {
+            upCountConditional(userBallMap, answerBallMapEntry, predicate, count);
+        }
+        return count.get();
+    }
+
+    private void upCountConditional(
+            Map<BallNumber, Integer> userBallMap,
+            Map.Entry<BallNumber, Integer> answerBallMapEntry,
+            BiPredicate<Integer, Integer> predicate,
+            AtomicInteger count
+    ) {
+        final Integer userBallPosition = userBallMap.get(answerBallMapEntry.getKey());
+        if (userBallPosition == null) {
+            return;
+        }
+        if (predicate.test(answerBallMapEntry.getValue(), userBallPosition)) {
+            count.incrementAndGet();
+        }
     }
 
     private boolean nothing() {

@@ -34,6 +34,11 @@ public class BallNumber {
         return Objects.hash(number);
     }
 
+    @Override
+    public String toString() {
+        return "number=" + number;
+    }
+
     private int convertToInt(final String input) {
         try {
             final int userNumber = Integer.parseInt(input);

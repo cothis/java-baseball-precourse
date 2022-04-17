@@ -49,7 +49,7 @@ class TryResultTest {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"123:132:2:1", "123:134:1:1"}, delimiter = ':')
+    @CsvSource(value = {"123:132:2:1", "123:134:1:1", "123:213:2:1"}, delimiter = ':')
     @DisplayName("볼 and  스트라이크")
     void ballAndStrike(String answer, String userInput, int ballCount, int strikeCount) {
         final List<Integer> randomNumbers = parseMockRandomNumbers(answer);

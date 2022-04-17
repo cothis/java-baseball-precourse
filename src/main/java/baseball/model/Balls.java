@@ -43,6 +43,11 @@ public class Balls {
         return balls;
     }
 
+    @Override
+    public String toString() {
+        return "ballMap=" + ballMap;
+    }
+
     private static void checkGenerateEnabled() {
         if (MAX_BOUNDARY - MIN_BOUNDARY + 1 < BALL_COUNT) {
             throw new IllegalStateException("BALL COUNT가 범위보다 큽니다. 생성을 진행할 수 없습니다.");
