@@ -15,6 +15,7 @@ public class GameController {
 
     private void start() {
         final Balls answerBalls = Balls.createByRandoms();
+        System.out.println(answerBalls);
         TryResult result = null;
         while(isPlaying(result)) {
             result = new TryResult(answerBalls, this.userBalls());

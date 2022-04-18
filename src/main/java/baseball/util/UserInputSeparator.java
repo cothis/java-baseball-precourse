@@ -9,6 +9,7 @@ public class UserInputSeparator {
 
     public static List<String> separateString(final String userInput, final int expectSize) {
         final String[] seperated = userInput.split("");
+        validateSize(userInput, seperated.length, expectSize);
         List<String> result = new ArrayList<>();
         for (String s : seperated) {
             if (result.contains(s)) {

@@ -55,6 +55,9 @@ public class Balls {
     }
 
     private void add(BallNumber ballNumber) {
+        if (this.ballMap.containsKey(ballNumber)) {
+            return;
+        }
         this.ballMap.put(ballNumber, sequence++);
     }
 
